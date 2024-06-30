@@ -9,6 +9,7 @@ public enum MLSMember {
     GINGER_ALE10("Ginger_Ale10", UUID.fromString("95593263-edef-4f07-a6bb-efd7a05e2652"), "ぎんあれ"),
     MONSTER2408("Monster2408", UUID.fromString("1c2b6991-e8ce-4e5d-b4d8-ec3f0cdc5f8e"), "もんすたぁ"),
     KAIJI_("kaiji_", UUID.fromString("bf72eed1-c522-49c4-ace3-975eb806471b"), "かいじ"),
+    BANNINSAN("BanNInSan_", UUID.fromString("52fd9d3e-d9f5-42c1-b883-867dfbd76b0e"), "番人"),
     ;
     private final String id;
     private final UUID uuid;
