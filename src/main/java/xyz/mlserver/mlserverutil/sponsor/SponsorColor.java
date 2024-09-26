@@ -66,26 +66,24 @@ public class SponsorColor {
     public ChatColor load(String uuid, ChatColor defaultColor) {
         createTable();
 
-        String sql = "select * from sponsor_color where uuid=?;";
+        String sql = "SELECT * FROM sponsor_color WHERE uuid = ?;";
         ChatColor color;
-        try(Connection con = dataBase.getDataSource().getConnection();
-            PreparedStatement prestat = con.prepareStatement(sql)) {
+        try (Connection con = dataBase.getDataSource().getConnection();
+             PreparedStatement prestat = con.prepareStatement(sql)) {
             prestat.setString(1, uuid);
             ResultSet rs = prestat.executeQuery();
             try {
-                if(rs.next()) {
-                    rs.beforeFirst();
-                    rs.next();
-                    // Log.debug(rs.getString("color"));
-                    color = Color.getNameToColor(rs.getString("color"));
+                if (rs.next()) {
+                    String colorCode = rs.getString("color");
+                    color = Color.getNameToColor(colorCode); // これがChatColorを取得する部分
                 } else {
-                    color = defaultColor;
+                    color = defaultColor; // デフォルトの色を返す
                 }
             } catch (Exception e) {
-                color = defaultColor;
+                color = defaultColor; // エラーが発生した場合もデフォルトの色を返す
             }
         } catch (SQLException e) {
-            color = defaultColor;
+            color = defaultColor; // SQL例外時もデフォルトの色を返す
         }
         return color;
     }
@@ -122,25 +120,24 @@ public class SponsorColor {
     public ChatColor get(String uuid, ChatColor defaultColor) {
         createTable();
 
-        String sql = "select * from sponsor_color where uuid=?;";
+        String sql = "SELECT * FROM sponsor_color WHERE uuid = ?;";
         ChatColor color;
-        try(Connection con = dataBase.getDataSource().getConnection();
-            PreparedStatement prestat = con.prepareStatement(sql)) {
+        try (Connection con = dataBase.getDataSource().getConnection();
+             PreparedStatement prestat = con.prepareStatement(sql)) {
             prestat.setString(1, uuid);
             ResultSet rs = prestat.executeQuery();
             try {
-                if(rs.next()) {
-                    rs.beforeFirst();
-                    rs.next();
-                    color = Color.getNameToColor(rs.getString("color"));
+                if (rs.next()) {
+                    String colorCode = rs.getString("color");
+                    color = Color.getNameToColor(colorCode); // これがChatColorを取得する部分
                 } else {
-                    color = defaultColor;
+                    color = defaultColor; // デフォルトの色を返す
                 }
             } catch (Exception e) {
-                color = defaultColor;
+                color = defaultColor; // エラーが発生した場合もデフォルトの色を返す
             }
         } catch (SQLException e) {
-            color = defaultColor;
+            color = defaultColor; // SQL例外時もデフォルトの色を返す
         }
         return color;
     }
