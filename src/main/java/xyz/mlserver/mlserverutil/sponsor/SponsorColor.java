@@ -25,6 +25,7 @@ public class SponsorColor {
      * @param color 登録する{@link ChatColor}
      */
     public void set(String uuid, ChatColor color) {
+        if (dataBase == null) return;
         createTable();
 
         String sql = "insert into sponsor_color (uuid, color) "
@@ -64,6 +65,7 @@ public class SponsorColor {
      * @return プレイヤーの登録 {@link ChatColor}
      */
     public ChatColor load(String uuid, ChatColor defaultColor) {
+        if (dataBase == null) return defaultColor;
         createTable();
 
         String sql = "SELECT * FROM sponsor_color WHERE uuid = ?;";
@@ -118,6 +120,7 @@ public class SponsorColor {
      * @return プレイヤーの登録 {@link ChatColor}
      */
     public ChatColor get(String uuid, ChatColor defaultColor) {
+        if (dataBase == null) return defaultColor;
         createTable();
 
         String sql = "SELECT * FROM sponsor_color WHERE uuid = ?;";
