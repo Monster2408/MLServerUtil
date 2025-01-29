@@ -17,6 +17,11 @@ public class SponsorColor {
 
     public SponsorColor(DataBase dataBase) {
         this.dataBase = dataBase;
+        createTable();
+    }
+
+    public DataBase getDataBase() {
+        return dataBase;
     }
 
     /**
@@ -25,15 +30,14 @@ public class SponsorColor {
      * @param color 登録する{@link ChatColor}
      */
     public void set(String uuid, ChatColor color) {
-        if (dataBase == null) return;
-        createTable();
+        if (getDataBase() == null) return;
 
         String sql = "insert into sponsor_color (uuid, color) "
                 + "VALUES (?, ?) "
                 + "ON DUPLICATE KEY UPDATE "
                 + "uuid=?, "
                 + "color=?;";
-        try(Connection con = dataBase.getDataSource().getConnection();
+        try(Connection con = getDataBase().getDataSource().getConnection();
             PreparedStatement prestat = con.prepareStatement(sql)) {
             prestat.setString(1, uuid);
             prestat.setString(2, color.toString());
@@ -65,12 +69,11 @@ public class SponsorColor {
      * @return プレイヤーの登録 {@link ChatColor}
      */
     public ChatColor load(String uuid, ChatColor defaultColor) {
-        if (dataBase == null) return defaultColor;
-        createTable();
+        if (getDataBase() == null) return defaultColor;
 
         String sql = "SELECT * FROM sponsor_color WHERE uuid = ?;";
         ChatColor color;
-        try (Connection con = dataBase.getDataSource().getConnection();
+        try (Connection con = getDataBase().getDataSource().getConnection();
              PreparedStatement prestat = con.prepareStatement(sql)) {
             prestat.setString(1, uuid);
             ResultSet rs = prestat.executeQuery();
@@ -120,12 +123,11 @@ public class SponsorColor {
      * @return プレイヤーの登録 {@link ChatColor}
      */
     public ChatColor get(String uuid, ChatColor defaultColor) {
-        if (dataBase == null) return defaultColor;
-        createTable();
+        if (getDataBase() == null) return defaultColor;
 
         String sql = "SELECT * FROM sponsor_color WHERE uuid = ?;";
         ChatColor color;
-        try (Connection con = dataBase.getDataSource().getConnection();
+        try (Connection con = getDataBase().getDataSource().getConnection();
              PreparedStatement prestat = con.prepareStatement(sql)) {
             prestat.setString(1, uuid);
             ResultSet rs = prestat.executeQuery();
@@ -165,11 +167,12 @@ public class SponsorColor {
     public ChatColor get(UUID uuid) { return get(uuid.toString(), null); }
 
     private void createTable() {
+        if (getDataBase() == null) return;
         String sql = "create table if not exists sponsor_color (" +
                 "uuid varchar(36) NOT NULL PRIMARY KEY," +
                 "color varchar(100)" +
                 ");";
-        try(Connection con = dataBase.getDataSource().getConnection();
+        try(Connection con = getDataBase().getDataSource().getConnection();
             PreparedStatement prestat = con.prepareStatement(sql)) {
             prestat.execute();
         } catch (SQLException e) {
